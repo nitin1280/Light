@@ -43,23 +43,18 @@ app.get("/leaderboard", (req, res) => {
 app.get("/lastWeekLeaderboard/:country", (req, res) => {
     const country = req.params.country;
     const countryLeaderboard = leaderboardData
-        .filter(user => userCountryData.find(u => u.userId === user.userId && u.country === country))
-        .slice(0, 200);
+         .slice(0, 200);
 
     res.json(countryLeaderboard);
 });
 
 // Fetch user rank, given the userId
 app.get("/userRank/:userId", (req, res) => {
-    const userId = parseInt(req.params.userId);
-    const user = leaderboardData.find(user => user.userId === userId);
+    const country = req.params.country;
+    const countryLeaderboard = userCountryData
+         .slice(0, 100);
 
-    if (user) {
-        const userRank = leaderboardData.findIndex(u => u.userId === userId) + 1;
-        res.json({ userId, userRank });
-    } else {
-        res.status(404).json({ error: "User not found" });
-    }
+    res.json(countryLeaderboard);
 });
 
 // API to get the top 200 users and their countries
@@ -71,3 +66,4 @@ app.get("/top200UsersAndCountries", (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
